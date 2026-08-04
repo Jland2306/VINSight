@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VINSight</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="hero">
+            <div>
+                <h1>VINSight</h1>
+                <h2>Vehicle Listing Analyzer</h2>
+                <p>Paste a Facebook Marketplace or Craigslist vehicle listing and get a quick risk assessment for price, mileage, and common issues.</p>
+            </div>
+        </header>
+        <main>
+            <section class="card form-card">
+                <h2>Paste Listing</h2>
+                <label for="listing-url">Listing URL</label>
+                <input id="listing-url" type="url" placeholder="https://www.facebook.com/marketplace/..." autocomplete="off">
+                <label for="pasted-text">Paste listing text (required for Facebook Marketplace, or if a URL can't be auto-scraped)</label>
+                <textarea id="pasted-text" rows="4" placeholder="Paste the listing title, description, price, mileage, condition, etc. here"></textarea>
+                <div class="grid-2">
+                    <div>
+                        <label for="vehicle-make">Make</label>
+                        <input id="vehicle-make" type="text" placeholder="e.g. Toyota" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="vehicle-model">Model</label>
+                        <input id="vehicle-model" type="text" placeholder="e.g. Camry" autocomplete="off">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <label for="vehicle-year">Year</label>
+                        <input id="vehicle-year" type="number" min="1900" max="2099" placeholder="2020">
+                    </div>
+                    <div>
+                        <label for="vehicle-price">Price ($)</label>
+                        <input id="vehicle-price" type="number" min="0" placeholder="15000">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <label for="vehicle-mileage">Mileage</label>
+                        <input id="vehicle-mileage" type="number" min="0" placeholder="65000">
+                    </div>
+                    <div>
+                        <label for="vehicle-condition">Condition</label>
+                        <select id="vehicle-condition">
+                            <option value="unknown" selected>Unknown</option>
+                            <option value="good">Good</option>
+                            <option value="fair">Fair</option>
+                            <option value="poor">Poor</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="autofill-btn" type="button">Auto-fill details from URL</button>
+                <button id="analyze-btn">Analyze Listing</button>
+                <p class="hint">If the listing URL does not contain make/model details, fill them manually to improve the recommendation.</p>
+            </section>
+            <div id="status" class="status-box">Waiting for a listing...</div>
+            <div id="listing-preview" class="card hidden"></div>
+            <div id="breakdown" class="card hidden"></div>
+            <div id="issues" class="card hidden"></div>
+            <div id="brand-issues" class="card hidden"></div>
+            <div id="recommendation" class="card hidden"></div>
+        </main>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    color-scheme: dark;
+
+    /* garage / diagnostic-tool palette */
+    --bg: #121316;
+    --surface: #1B1E24;
+    --surface-2: #23272F;
+    --border: #313742;
+    --text: #E7EAEE;
+    --muted: #9BA3AE;
+    --accent: #F4C20D;
+    --accent-ink: #1A1A1D;
+    --danger: #EF233C;
+    --warn: #FF9F1C;
+    --ok: #2DC653;
+    --radius: 14px;
+
+    --font-display: "Rajdhani", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--bg);
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    padding: 24px;
+    background: var(--bg);
+}
+
+*:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.app-shell {
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 32px 28px;
+    background:
+        linear-gradient(135deg, #1c1f26 0%, #0e0f12 100%);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 22px;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        135deg,
+        rgba(244, 194, 13, 0.07) 0px,
+        rgba(244, 194, 13, 0.07) 10px,
+        transparent 10px,
+        transparent 26px
+    );
+    pointer-events: none;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--accent) 0px,
+        var(--accent) 12px,
+        var(--accent-ink) 12px,
+        var(--accent-ink) 24px
+    );
+}
+
+.hero > div {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    display: inline-block;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+}
+
+.hero p {
+    margin: 0;
+    max-width: 760px;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+/* ---------- layout ---------- */
+
+main {
+    display: grid;
+    gap: 20px;
+}
+
+.card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 24px;
+    right: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent 70%);
+    border-radius: 2px;
+}
+
+.form-card h2 {
+    margin-top: 0;
+}
+
+.card h2,
+.card h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.card h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ---------- form ---------- */
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.form-card > label {
+    margin-top: 24px;
+}
+
+.form-card > label:first-of-type {
+    margin-top: 6px;
+}
+
+.form-card > .grid-2 {
+    margin-top: 24px;
+}
+
+.form-card > #autofill-btn {
+    margin-top: 28px;
+}
+
+.form-card > #analyze-btn {
+    margin-top: 12px;
+}
+
+.form-card > .hint {
+    margin-top: 12px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-size: 1rem;
+    outline: none;
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--muted);
+    opacity: 0.7;
+}
+
+input[type="number"] {
+    font-family: var(--font-mono);
+}
+
+select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+        linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 36px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(244, 194, 13, 0.25);
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+/* ---------- buttons ---------- */
+
+button {
+    width: 100%;
+    border: 1px solid transparent;
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 1rem;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.16s ease, filter 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+    margin-top: 14px;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+}
+
+#analyze-btn {
+    background: var(--accent);
+    color: var(--accent-ink);
+    box-shadow: 0 8px 20px rgba(244, 194, 13, 0.18);
+}
+
+#autofill-btn {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+#autofill-btn:hover {
+    background: rgba(244, 194, 13, 0.08);
+}
+
+.hint {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* ---------- status readout ---------- */
+
+.status-box {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text);
+    padding: 16px 18px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--muted);
+    border-radius: 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.status-box.status-warning {
+    color: var(--warn);
+    border-left-color: var(--warn);
+}
+
+.status-box.ok {
+    color: var(--ok);
+    border-left-color: var(--ok);
+}
+
+.status-box.warn {
+    color: var(--warn);
+    border-left-color: var(--warn);
+}
+
+.status-box.error {
+    color: var(--danger);
+    border-left-color: var(--danger);
+}
+
+/* ---------- listing preview ---------- */
+
+.listing-images {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.listing-images img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+.listing-preview-details p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+main .card p {
+    line-height: 1.6;
+}
+
+main .card p strong {
+    color: var(--muted);
+    font-weight: 600;
+}
+
+/* ---------- lists / issues ---------- */
+
+.result-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.result-list li,
+#issues .result-list p,
+#brand-issues .result-list p {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--warn);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0 0 8px;
+    line-height: 1.5;
+}
+
+#issues > div.result-list,
+#issues > .result-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.warn-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+}
+
+.warn-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.issue-chip {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 14px;
+    background: var(--surface-2);
+    color: var(--text);
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    margin: 4px 6px 0 0;
+    font-size: 0.9rem;
+}
+
+.issue-chip .warn-icon {
+    width: 17px;
+    height: 17px;
+    margin-top: 0;
+}
+
+/* reusable dashboard warning-light chips, ready for app.js to use */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.chip::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px currentColor;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+.chip--ok {
+    color: var(--ok);
+    border-color: rgba(45, 198, 83, 0.4);
+}
+
+.chip--warn {
+    color: var(--warn);
+    border-color: rgba(255, 159, 28, 0.4);
+}
+
+.chip--danger {
+    color: var(--danger);
+    border-color: rgba(239, 35, 60, 0.4);
+}
+
+/* ---------- hazard divider ---------- */
+
+.hazard-rule {
+    height: 6px;
+    border-radius: 3px;
+    margin: 18px 0;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--accent) 0px,
+        var(--accent) 10px,
+        var(--accent-ink) 10px,
+        var(--accent-ink) 20px
+    );
+}
+
+/* ---------- speedometer gauge ---------- */
+
+.gauge {
+    max-width: 280px;
+    margin: 8px auto 4px;
+    text-align: center;
+}
+
+.gauge svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+.gauge .needle {
+    filter: drop-shadow(0 0 5px rgba(231, 234, 238, 0.65));
+}
+
+.gauge-value {
+    margin-top: -6px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--text);
+}
+
+.gauge-verdict {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 1.05rem;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ---------- responsive ---------- */
+
+/* dashboard grid for wide windows only; below this, layout stays the
+   simple single-column stack (unchanged) for readability/accessibility */
+@media (min-width: 1100px) {
+    .app-shell {
+        max-width: 1400px;
+    }
+
+    .hero {
+        text-align: center;
+    }
+
+    .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    main {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-areas:
+            "status status status status status status"
+            "form form form preview preview preview"
+            "form form form summary summary summary"
+            "problems problems questions questions recommend recommend";
+        column-gap: 24px;
+        row-gap: 24px;
+    }
+
+    .form-card { grid-area: form; }
+    #status { grid-area: status; }
+    #listing-preview { grid-area: preview; }
+    #breakdown { grid-area: summary; }
+    #issues { grid-area: problems; }
+    #brand-issues { grid-area: questions; }
+    #recommendation { grid-area: recommend; }
+
+    /* before any result card has content, drop the dashboard split and
+       center the form on its own so it doesn't sit lopsided next to
+       empty grid areas; the moment autofill/analyze populates a card,
+       :has() flips this back to the full grid above */
+    main:not(:has(#listing-preview:not(.hidden), #breakdown:not(.hidden), #issues:not(.hidden), #brand-issues:not(.hidden), #recommendation:not(.hidden))) {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "status"
+            "form";
+        max-width: 640px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .listing-images {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .gauge {
+        max-width: 220px;
+    }
+}
