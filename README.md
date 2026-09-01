@@ -57,5 +57,3 @@ Because the server fetches user-supplied URLs and feeds scraped content to an LL
 3. Set your Anthropic API key (e.g. in a `.env` file or your shell): `ANTHROPIC_API_KEY=your-key-here`
 4. Start the server: `node server.js`
 5. Open the app in your browser at `http://localhost:3000`.
-
-> **Fill in —** Confirm the start command and port above match your setup. Worth noting: without an API key, the app still runs in heuristic-only mode — a nice way for someone to try it without credentials.
