@@ -8,8 +8,15 @@ VINSight takes a Craigslist or Facebook Marketplace car listing as a URL or past
 
 ---
 
-> **Fill in —** Add a screenshot or short GIF of an analyzed listing here — the rendered risk cards are the most convincing thing to show. Drop the file in a `/screenshots` folder and reference it:
-> `![VINSight analysis](screenshots/analysis.png)`
+<p align="center">
+  <img src="screenshots/VIN1.png" width="45%">
+  <img src="screenshots/VIN2.png" width="45%">
+</p>
+
+<p align="center">
+  <img src="screenshots/VIN3.png" width="45%">
+  <img src="screenshots/VIN4.png" width="45%">
+</p>
 
 ---
 
