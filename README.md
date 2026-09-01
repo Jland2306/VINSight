@@ -17,7 +17,7 @@ VINSight takes a Craigslist or Facebook Marketplace car listing as a URL or past
 </p>
 
 <p align="center">
-  <img src="screenshots/VIN3.png" width="55%">
+  <img src="screenshots/VIN3.png" width="45%">
   <img src="screenshots/VIN4.png" width="45%">
 </p>
 
