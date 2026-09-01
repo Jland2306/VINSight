@@ -1,25 +1,61 @@
-VINSight — Vehicle Listing Risk Analyzer
+# VINSight
 
-VINSight takes a Craigslist or Facebook Marketplace car listing (URL or pasted text) and returns a fast, structured risk assessment: is the price fair, what issues are common for that year/make/model, what red flags are in the listing, what to ask the seller, and what to physically check before buying.
+**A vehicle-listing risk analyzer that turns a used-car ad into a structured buying decision.**
 
-What it does
+VINSight takes a Craigslist or Facebook Marketplace car listing as a URL or pasted text and returns a fast, structured risk assessment. This web app asses whether the price is fair, what problems are common for that year/make/model, what red flags appear in the listing, what to ask the seller, and what to physically check before buying.
 
-Paste a listing URL (or raw text) and it auto-fills make, model, year, price, mileage, and condition.
-Runs an AI-backed analysis that returns: fair-price assessment vs. market range, likely known issues with severity and estimated repair cost, red flags in the listing text, seller questions, an in-person inspection checklist, and an overall 1–10 recommendation score.
-Shows a listing preview (title, description, images, location, posted date) when it can be scraped.
-If scraping the URL fails or the AI is unavailable, it still returns a rule-based heuristic assessment instead of erroring out.
+*A full-stack project combining web scraping, LLM-backed analysis, and defensive server-side security.*
 
-How it's built
+---
 
-Backend: Node.js + Express (server.js). 
-Craigslist pages are scraped and parsed with a custom parser (lib/craigslistParser.js) using Cheerio; Facebook Marketplace requires pasted text since Facebook blocks unauthenticated scraping (the server detects the login wall and prompts for manual paste instead of returning garbage).
+> **Fill in —** Add a screenshot or short GIF of an analyzed listing here — the rendered risk cards are the most convincing thing to show. Drop the file in a `/screenshots` folder and reference it:
+> `![VINSight analysis](screenshots/analysis.png)`
 
-Extraction pipeline: structured data first — JSON-LD, Open Graph/meta tags, URL heuristics, and Craigslist's own markup — with an Anthropic Claude call (claude-haiku-4-5) filling in whatever fields heuristics missed.
+---
 
-Analysis: a separate Claude call (claude-sonnet-5) acts as an experienced mechanic and buyer's advocate returning strict JSON that the frontend renders. If the API key isn't set or the call fails, a local heuristic engine (price-per-mile ratio, keyword detection for rust/leaks/salvage/non-running, mileage/age thresholds) produces a comparable report.
+## Overview
 
-Security: an SSRF guard restricts server-side fetches to an allowlist of hosts (craigslist.org, facebook.com) and resolves DNS to block requests to private/loopback/link-local IPs (defends against DNS rebinding). Untrusted scraped text is explicitly labeled as data-not-instructions in the LLM prompts to guard against prompt injection from listing content.
+Buying a used car from an online listing means sorting real information from noise under time pressure. VINSight automates that first pass. When pasting a listing, it extracts the vehicle details, evaluates the asking price against the market, surfaces likely issues and red flags, and hands back a concrete plan for talking to the seller and inspecting the car with a single recommendation score to anchor your decision.
 
-Frontend: vanilla HTML/CSS/JS (public/), no framework — a single form, status states, and cards that render the structured analysis.
+## Features
 
-Stack: Node/Express, Cheerio, Anthropic SDK, vanilla JS/CSS.
+- **URL or paste input** — Drop in a listing URL or raw text; VINSight auto-fills make, model, year, price, mileage, and condition.
+- **Structured risk report** — Returns a fair-price assessment against the market range, likely known issues with severity and estimated repair cost, red flags found in the listing text, questions to ask the seller, an in-person inspection checklist, and an overall 1–10 recommendation score.
+- **Listing preview** — Shows the title, description, images, location, and posted date when the listing can be scraped.
+- **Never dead-ends** — If scraping fails or the AI is unavailable, it falls back to a rule-based heuristic assessment instead of returning an error.
+
+## How It Works
+
+**Backend** — Node.js + Express (`server.js`).
+
+**Scraping & parsing** — Craigslist pages are scraped and parsed by a custom parser (`lib/craigslistParser.js`) built on Cheerio. Facebook Marketplace blocks unauthenticated scraping, so instead of returning garbage, the server detects the login wall and prompts the user to paste the listing text manually.
+
+**Extraction pipeline** — Structured data first: JSON-LD, Open Graph / meta tags, URL heuristics, and Craigslist's own markup. An Anthropic Claude call (`claude-haiku-4-5`) then fills in whatever fields the heuristics missed.
+
+**Analysis** — A separate Claude call (`claude-sonnet-5`) acts as an experienced mechanic and buyer's advocate, returning strict JSON that the frontend renders into cards. If no API key is configured or the call fails, a local heuristic engine takes over — using price-per-mile ratios, keyword detection for issues like rust, leaks, salvage, and non-running vehicles, and mileage/age thresholds — to produce a comparable report.
+
+**Frontend** — Vanilla HTML/CSS/JS (`public/`), no framework: a single form, clear status states, and cards that render the structured analysis.
+
+## Security
+
+Because the server fetches user-supplied URLs and feeds scraped content to an LLM, both were treated as untrusted:
+
+- **SSRF protection** — Server-side fetches are restricted to an allowlist of hosts (`craigslist.org`, `facebook.com`), and DNS is resolved to block requests to private, loopback, and link-local IPs — defending against DNS rebinding.
+- **Prompt-injection defense** — Untrusted scraped listing text is explicitly labeled as data, not instructions, in the LLM prompts, so a malicious listing can't hijack the analysis.
+
+## Built With
+
+- **Backend:** Node.js, Express
+- **Scraping:** Cheerio
+- **AI:** Anthropic SDK (Claude)
+- **Frontend:** Vanilla HTML, CSS, JavaScript
+
+## Running Locally
+
+1. Clone the repository.
+2. Install dependencies: `npm install`
+3. Set your Anthropic API key (e.g. in a `.env` file or your shell): `ANTHROPIC_API_KEY=your-key-here`
+4. Start the server: `node server.js`
+5. Open the app in your browser at `http://localhost:3000`.
+
+> **Fill in —** Confirm the start command and port above match your setup. Worth noting: without an API key, the app still runs in heuristic-only mode — a nice way for someone to try it without credentials.
