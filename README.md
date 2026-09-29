@@ -29,29 +29,29 @@ Buying a used car from an online listing means sorting real information from noi
 
 ## Features
 
-- **URL or paste input** — Drop in a listing URL or raw text; VINSight auto-fills make, model, year, price, mileage, and condition.
-- **Structured risk report** — Returns a fair-price assessment against the market range, likely known issues with severity and estimated repair cost, red flags found in the listing text, questions to ask the seller, an in-person inspection checklist, and an overall 1–10 recommendation score.
-- **Listing preview** — Shows the title, description, images, location, and posted date when the listing can be scraped.
-- **Never dead-ends** — If scraping fails or the AI is unavailable, it falls back to a rule-based heuristic assessment instead of returning an error.
+- **URL or paste input** - Drop in a listing URL or raw text; VINSight auto-fills make, model, year, price, mileage, and condition.
+- **Structured risk report** - Returns a fair-price assessment against the market range, likely known issues with severity and estimated repair cost, red flags found in the listing text, questions to ask the seller, an in-person inspection checklist, and an overall 1–10 recommendation score.
+- **Listing preview** - Shows the title, description, images, location, and posted date when the listing can be scraped.
+- **Never dead-ends** - If scraping fails or the AI is unavailable, it falls back to a rule-based heuristic assessment instead of returning an error.
 
 ## How It Works
 
 **Backend** — Node.js + Express (`server.js`).
 
-**Scraping & parsing** — Craigslist pages are scraped and parsed by a custom parser (`lib/craigslistParser.js`) built on Cheerio. Facebook Marketplace blocks unauthenticated scraping, so instead of returning garbage, the server detects the login wall and prompts the user to paste the listing text manually.
+**Scraping & parsing** - Craigslist pages are scraped and parsed by a custom parser (`lib/craigslistParser.js`) built on Cheerio. Facebook Marketplace blocks unauthenticated scraping, so instead of returning garbage, the server detects the login wall and prompts the user to paste the listing text manually.
 
-**Extraction pipeline** — Structured data first: JSON-LD, Open Graph / meta tags, URL heuristics, and Craigslist's own markup. An Anthropic Claude call (`claude-haiku-4-5`) then fills in whatever fields the heuristics missed.
+**Extraction pipeline** - Structured data first: JSON-LD, Open Graph / meta tags, URL heuristics, and Craigslist's own markup. An Anthropic Claude call (`claude-haiku-4-5`) then fills in whatever fields the heuristics missed.
 
-**Analysis** — A separate Claude call (`claude-sonnet-5`) acts as an experienced mechanic and buyer's advocate, returning strict JSON that the frontend renders into cards. If no API key is configured or the call fails, a local heuristic engine takes over — using price-per-mile ratios, keyword detection for issues like rust, leaks, salvage, and non-running vehicles, and mileage/age thresholds — to produce a comparable report.
+**Analysis** - A separate Claude call (`claude-sonnet-5`) acts as an experienced mechanic and buyer's advocate, returning strict JSON that the frontend renders into cards. If no API key is configured or the call fails, a local heuristic engine takes over — using price-per-mile ratios, keyword detection for issues like rust, leaks, salvage, and non-running vehicles, and mileage/age thresholds — to produce a comparable report.
 
-**Frontend** — Vanilla HTML/CSS/JS (`public/`), no framework: a single form, clear status states, and cards that render the structured analysis.
+**Frontend** - Vanilla HTML/CSS/JS (`public/`), no framework: a single form, clear status states, and cards that render the structured analysis.
 
 ## Security
 
 Because the server fetches user-supplied URLs and feeds scraped content to an LLM, both were treated as untrusted:
 
-- **SSRF protection** — Server-side fetches are restricted to an allowlist of hosts (`craigslist.org`, `facebook.com`), and DNS is resolved to block requests to private, loopback, and link-local IPs — defending against DNS rebinding.
-- **Prompt-injection defense** — Untrusted scraped listing text is explicitly labeled as data, not instructions, in the LLM prompts, so a malicious listing can't hijack the analysis.
+- **SSRF protection** - Server-side fetches are restricted to an allowlist of hosts (`craigslist.org`, `facebook.com`), and DNS is resolved to block requests to private, loopback, and link-local IPs — defending against DNS rebinding.
+- **Prompt-injection defense** - Untrusted scraped listing text is explicitly labeled as data, not instructions, in the LLM prompts, so a malicious listing can't hijack the analysis.
 
 ## Built With
 
