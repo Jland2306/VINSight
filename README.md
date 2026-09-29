@@ -4,8 +4,6 @@
 
 VINSight takes a Craigslist or Facebook Marketplace car listing as a URL or pasted text and returns a fast, structured risk assessment. This web app asses whether the price is fair, what problems are common for that year/make/model, what red flags appear in the listing, what to ask the seller, and what to physically check before buying.
 
-*A full-stack project combining web scraping, LLM-backed analysis, and defensive server-side security.*
-
 ---
 
 <p align="center">
